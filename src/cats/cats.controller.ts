@@ -1,6 +1,18 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Patch, Post, Put, UseFilters } from "@nestjs/common";
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+  UseFilters
+} from "@nestjs/common";
 import { CatsService } from './cats.service';
 import { HttpExceptionFilter } from "../http-exception.filter";
+import { PositiveIntPipe } from "../common/pipes/positiveInt.pipe";
 
 @Controller('cats')
 export class CatsController {
@@ -20,8 +32,11 @@ export class CatsController {
     return 'all cat';
   }
 
+  /*
+  파라미터의 값에 대해 pipe를 추가하여 값을 필터링
+   */
   @Get(':id')
-  getOnceCate() {
+  getOnceCate(@Param('id', PositiveIntPipe) id: number) {
     return 'one cat';
   }
 
