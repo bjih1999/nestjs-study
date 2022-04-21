@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
-import { LoggerMiddleware } from './logger.middleware';
+import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 
 @Module({
   // 명령어를 통해 module을 생성하면 자동으로 app.module에 추가됨 ex. node g module cats
