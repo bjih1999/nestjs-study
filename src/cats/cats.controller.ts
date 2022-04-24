@@ -21,10 +21,10 @@ export class CatsController {
 
   @Get()
   @UseFilters(HttpExceptionFilter) // 필터를 적용할 대상위에 달아주면 예외 처리 필터가 적용됨
-  @UseInterceptors(SuccessInterceptor) // 인터셉터를 적용할 대상위에 달아주면 인터셉터가 적용됨
+  @UseInterceptors(SuccessInterceptor) // 인터셉터를 적용할 대상위에 달아주면 인터셉터가 적용
   getAllCat() {
     /*
-    - 단순 Error로 통일된 express와 달리 nest에는 HttpExeption이 존재함
+    - 단순 Error로 통일된 express와 달리 nes됨에는 HttpExeption이 존재함
     - HttpException이기 때문에 네트워크 레이어와 근접한 Controller 단에서 발생시키는 것이 바람직해 보인다.
    인ㅌ */
     throw new HttpException(
