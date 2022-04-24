@@ -5,19 +5,18 @@ import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 @Module({
   // 명령어를 통해 module을 생성하면 자동으로 app.module에 추가됨 ex. node g module cats
   imports: [
     CatsModule,
-    ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFinedAndModify: true,
+
+    // envFilePath 지정해주어야함
+    ConfigModule.forRoot({
+      envFilePath: './src/.env',
     }),
+    MongooseModule.forRoot(process.env.MONGODB_URI, {}),
   ],
   controllers: [AppController],
   // providers에 등록해야 의존성을 다른 의존성에 주입할 수 있음
