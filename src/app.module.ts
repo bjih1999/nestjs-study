@@ -5,6 +5,7 @@ import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 import mongoose from 'mongoose';
 
 @Module({
@@ -15,6 +16,7 @@ import mongoose from 'mongoose';
     // envFilePath 지정해주어야함
     ConfigModule.forRoot({}),
     MongooseModule.forRoot(process.env.MONGODB_URI, {}),
+    AuthModule,
   ],
   controllers: [AppController],
   // providers에 등록해야 의존성을 다른 의존성에 주입할 수 있음

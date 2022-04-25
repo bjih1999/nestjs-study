@@ -9,19 +9,25 @@ import {
   Patch,
   Post,
   Put,
-  UseFilters, UseInterceptors
-} from "@nestjs/common";
+  UseFilters,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CatsService } from './cats.service';
-import { HttpExceptionFilter } from "../common/exceptions/http-exception.filter";
-import { PositiveIntPipe } from "../common/pipes/positiveInt.pipe";
-import { SuccessInterceptor } from "../common/interceptors/success.interceptor";
+import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
+import { PositiveIntPipe } from '../common/pipes/positiveInt.pipe';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cat.dto';
+import { AuthService } from '../auth/auth.service';
+import { LoginRequestDto } from '../auth/dto/login.request.dto';
 
 @Controller('cats')
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   getCurrentCat() {
@@ -44,6 +50,12 @@ export class CatsController {
   async signup(@Body() body: CatRequestDto) {
     console.log(body);
     return this.catsService.signup(body);
+  }
+
+  @ApiOperation({ summary: '로그인' })
+  @Post('login')
+  login(@Body() body: LoginRequestDto) {
+    return this.authService.jwtLogIn(body);
   }
 
   // @Get()
