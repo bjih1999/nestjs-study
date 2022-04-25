@@ -4,33 +4,11 @@
  * 2. 상속을 사용하여 재사용성을 높일 수 있음
  */
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
+import { Cat } from '../cats.schema';
 
-export class CatRequestDto {
-  @ApiProperty({
-    example: 'asdf@cashwalk.io',
-    description: 'email',
-    required: true,
-  })
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @ApiProperty({
-    example: 'asdf',
-    description: 'password',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
-  @ApiProperty({
-    example: 'jih',
-    description: 'name',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-}
+export class CatRequestDto extends PickType(Cat, [
+  'email',
+  'name',
+  'password',
+] as const) {}

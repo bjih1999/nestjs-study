@@ -15,9 +15,9 @@ import { CatsService } from './cats.service';
 import { HttpExceptionFilter } from "../common/exceptions/http-exception.filter";
 import { PositiveIntPipe } from "../common/pipes/positiveInt.pipe";
 import { SuccessInterceptor } from "../common/interceptors/success.interceptor";
-import { CatRequestDto } from "./dto/cats.request.dto";
-import {ApiOperation, ApiResponse} from "@nestjs/swagger";
-import {ReadOnlyCatDto} from "./dto/cat.dto";
+import { CatRequestDto } from './dto/cats.request.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ReadOnlyCatDto } from './dto/cat.dto';
 
 @Controller('cats')
 export class CatsController {
