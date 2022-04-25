@@ -16,6 +16,8 @@ import { HttpExceptionFilter } from "../common/exceptions/http-exception.filter"
 import { PositiveIntPipe } from "../common/pipes/positiveInt.pipe";
 import { SuccessInterceptor } from "../common/interceptors/success.interceptor";
 import { CatRequestDto } from "./dto/cats.request.dto";
+import {ApiOperation, ApiResponse} from "@nestjs/swagger";
+import {ReadOnlyCatDto} from "./dto/cat.dto";
 
 @Controller('cats')
 export class CatsController {
@@ -26,6 +28,18 @@ export class CatsController {
     return 'cuurent cat';
   }
 
+  @ApiResponse({
+    status: 500,
+    description: 'Server Error',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '성공!',
+    type: ReadOnlyCatDto,
+  })
+  @ApiOperation({
+    summary: '회원가입',
+  })
   @Post()
   async signup(@Body() body: CatRequestDto) {
     console.log(body);
