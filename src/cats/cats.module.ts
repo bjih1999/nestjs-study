@@ -3,12 +3,13 @@ import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
 import {MongooseModule} from "@nestjs/mongoose";
 import {Cat, CatSchema} from "./cats.schema";
+import { CatsRepository } from "./cats.repository";
 
 @Module({
   // 해당 스키마를 등록해서 사용할 수 있도록 함
   imports: [MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])],
   controllers: [CatsController], // nest g co cats
-  providers: [CatsService], // cats g service cats
+  providers: [CatsService, CatsRepository], // cats g service cats
   /*
   exports에 등록해줌으로써 다른 모듈에서 주입받아 사용할 수 있음
   기본적으로 nest 모듈은 하위 의존성을 캡슐화하기 때문에, 사용하고자하는 module에 의존성을 provider로 등록해야 해당 모듈에서 사용할 수 있음

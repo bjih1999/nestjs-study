@@ -4,14 +4,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { Cat } from './cats.schema';
+import { CatsRepository } from './cats.repository';
 
 @Injectable()
 export class CatsService {
-  constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
+  constructor(private readonly catsRepository: CatsRepository) {}
 
   async signup(body: CatRequestDto) {
     const { email, name, password } = body;
-    const isCatExist = await this.catModel.exists({ email });
+    const isCatExist = await this.catsRepository.existsByEmail(email);
 
     if (isCatExist) {
       throw new UnauthorizedException('해당하는 고양이는 이미 존재합니다.');
@@ -34,7 +35,7 @@ export class CatsService {
      *
      * 또한, 여러개의 데이터소스를 사용할 경우 서비스에서는 데이터 출처와 관계없이 로직을 사용할 수 있게 됨
      */
-    const cat = await this.catModel.create({
+    const cat = await this.catsRepository.create({
       email,
       name,
       password: hashedPassword,
