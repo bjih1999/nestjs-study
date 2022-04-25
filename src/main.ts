@@ -20,6 +20,9 @@ async function bootstrap() {
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
   // docs => uri
   SwaggerModule.setup('docs', app, document);
+  app.enableCors({
+    credentials: true,
+  });
   await app.listen(process.env.PORT);
 }
 bootstrap();
