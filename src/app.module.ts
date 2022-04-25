@@ -13,9 +13,7 @@ import mongoose from 'mongoose';
     CatsModule,
 
     // envFilePath 지정해주어야함
-    ConfigModule.forRoot({
-      envFilePath: './src/.env',
-    }),
+    ConfigModule.forRoot({}),
     MongooseModule.forRoot(process.env.MONGODB_URI, {}),
   ],
   controllers: [AppController],

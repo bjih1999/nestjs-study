@@ -7,7 +7,7 @@ const options: SchemaOptions = {
 };
 
 @Schema(options)
-export class Cat extends Document{
+export class Cat extends Document {
   @Prop({
     required: true,
     unique: true,
@@ -33,6 +33,17 @@ export class Cat extends Document{
   @Prop()
   @IsString()
   imgUrl: string;
+
+  readonly readOnlyData: { id: string; email: string; name: string };
 }
 
 export const CatSchema = SchemaFactory.createForClass(Cat);
+
+// virtual 필드를 만들어 응답 dto로 사용
+CatSchema.virtual('readOnlyData').get(function (this: Cat) {
+  return {
+    id: this.id,
+    email: this.email,
+    name: this.name,
+  };
+});
