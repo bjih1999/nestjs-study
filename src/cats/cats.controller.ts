@@ -9,9 +9,12 @@ import {
   Patch,
   Post,
   Put,
-  UseFilters, UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
+  Req,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { CatsService } from './cats.service';
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { PositiveIntPipe } from '../common/pipes/positiveInt.pipe';
@@ -21,8 +24,8 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cat.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginRequestDto } from '../auth/dto/login.request.dto';
-import { JwtService } from "@nestjs/jwt";
-import { JwtAuthGuard } from "../auth/jwt/jwt.guard";
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
+import { CurrentUser } from "../common/decorators/user.decorators";
 
 @Controller('cats')
 export class CatsController {
@@ -36,8 +39,8 @@ export class CatsController {
   })
   @UseGuards(JwtAuthGuard)
   @Get()
-  getCurrentCat() {
-    return 'cuurent cat';
+  getCurrentCat(@CurrentUser() cat) {
+    return cat.readOnlyData;
   }
 
   @ApiResponse({
