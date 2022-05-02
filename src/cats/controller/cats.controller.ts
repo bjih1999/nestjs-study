@@ -9,11 +9,12 @@ import {
   Patch,
   Post,
   Put,
-  Req, UploadedFiles,
+  Req,
+  UploadedFiles,
   UseFilters,
   UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
+  UseInterceptors,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { CatsService } from '../service/cats.service';
 import { HttpExceptionFilter } from '../../common/exceptions/http-exception.filter';
@@ -27,8 +28,8 @@ import { LoginRequestDto } from '../../auth/dto/login.request.dto';
 import { JwtAuthGuard } from '../../auth/jwt/jwt.guard';
 import { CurrentUser } from '../../common/decorators/user.decorators';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from "src/common/utils/multer.options";
-import { Cat } from "../cats.schema";
+import { multerOptions } from 'src/common/utils/multer.options';
+import { Cat } from '../cats.schema';
 
 @Controller('cats')
 export class CatsController {
@@ -79,6 +80,14 @@ export class CatsController {
   uploadCatImg(@UploadedFiles() files: Array<File>, @CurrentUser() cat: Cat) {
     console.log(files);
     return this.catsService.uploadImg(cat, files);
+  }
+
+  @ApiOperation({
+    summary: '모든 고양이 가져오기',
+  })
+  @Get('all')
+  getAllCat() {
+    return this.catsService.getAllCat();
   }
   // @Get()
   // @UseFilters(HttpExceptionFilter) // 필터를 적용할 대상위에 달아주면 예외 처리 필터가 적용됨
