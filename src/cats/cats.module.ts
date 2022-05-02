@@ -5,10 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Cat, CatSchema } from './cats.schema';
 import { CatsRepository } from './cats.repository';
 import { AuthModule } from '../auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   // 해당 스키마를 등록해서 사용할 수 있도록 함
   imports: [
+    MulterModule.register({
+      dest: './upload',
+    }),
     MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
 
     // 순환 참조
