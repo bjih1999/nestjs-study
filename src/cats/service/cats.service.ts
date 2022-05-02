@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CatRequestDto } from './dto/cats.request.dto';
+import { CatRequestDto } from '../dto/cats.request.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
-import { Cat } from './cats.schema';
-import { CatsRepository } from './cats.repository';
+import { Cat } from '../cats.schema';
+import { CatsRepository } from '../cats.repository';
 
 @Injectable()
 export class CatsService {
@@ -42,5 +42,18 @@ export class CatsService {
     });
 
     return cat.readOnlyData;
+  }
+
+  async uploadImg(cat: Cat, files: Array<File>) {
+    const fileName = `cats/${files.values()[0].filename}`;
+
+    console.log(fileName);
+    const newCat = await this.catsRepository.findCatByIdAndUpdateImg(
+      cat.id,
+      fileName,
+    );
+    console.log(newCat);
+
+    return newCat;
   }
 }

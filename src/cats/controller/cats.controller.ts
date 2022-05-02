@@ -15,19 +15,20 @@ import {
   UseInterceptors
 } from "@nestjs/common";
 import { Request } from 'express';
-import { CatsService } from './cats.service';
-import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
-import { PositiveIntPipe } from '../common/pipes/positiveInt.pipe';
-import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
-import { CatRequestDto } from './dto/cats.request.dto';
+import { CatsService } from '../service/cats.service';
+import { HttpExceptionFilter } from '../../common/exceptions/http-exception.filter';
+import { PositiveIntPipe } from '../../common/pipes/positiveInt.pipe';
+import { SuccessInterceptor } from '../../common/interceptors/success.interceptor';
+import { CatRequestDto } from '../dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ReadOnlyCatDto } from './dto/cat.dto';
-import { AuthService } from '../auth/auth.service';
-import { LoginRequestDto } from '../auth/dto/login.request.dto';
-import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
-import { CurrentUser } from '../common/decorators/user.decorators';
+import { ReadOnlyCatDto } from '../dto/cat.dto';
+import { AuthService } from '../../auth/auth.service';
+import { LoginRequestDto } from '../../auth/dto/login.request.dto';
+import { JwtAuthGuard } from '../../auth/jwt/jwt.guard';
+import { CurrentUser } from '../../common/decorators/user.decorators';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from "src/common/utils/multer.options";
+import { Cat } from "../cats.schema";
 
 @Controller('cats')
 export class CatsController {
@@ -73,10 +74,11 @@ export class CatsController {
     summary: '고양이 이미지 업로드',
   })
   @UseInterceptors(FilesInterceptor('images', 10, multerOptions('cats')))
+  @UseGuards(JwtAuthGuard)
   @Post('upload')
-  uploadCatImg(@UploadedFiles() files: Array<File>) {
+  uploadCatImg(@UploadedFiles() files: Array<File>, @CurrentUser() cat: Cat) {
     console.log(files);
-    return 'uploadImg';
+    return this.catsService.uploadImg(cat, files);
   }
   // @Get()
   // @UseFilters(HttpExceptionFilter) // 필터를 적용할 대상위에 달아주면 예외 처리 필터가 적용됨
